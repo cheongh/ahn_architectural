@@ -1,2 +1,2 @@
 # ahn_architectural
-Connectomics analyses for Cheong, Boone, Bennet et al., 2023
+Connectomics and calcium analyses for Cheong, Boone, Bennett et al., 2023
