@@ -18,7 +18,7 @@ fanc_skel_subpath = paste(getwd(), "fanc_skels", "dn", sep = "\\\\")
 if (!dir.exists(fanc_skel_subpath)) dir.create(fanc_skel_subpath)
 
 #tweak these settings
-#with_fanc(download_neuron_obj(unlist(fanc_dn_data$autoID[1]), save.obj = fanc_skel_subpath))
+with_fanc(download_neuron_obj(unlist(fanc_dn_data$autoID[1]), save.obj = fanc_skel_subpath))
 
 #fanc_dn_skels = with_fanc(meshparty_skeletonize(unlist(fanc_dn_data$autoID[1])))
 #skeletor function bugged
@@ -57,21 +57,6 @@ skeletor_wavefront = function(obj, waves, step_size, heal = TRUE) {
 	return(swclist)
 }
 
-#mesh = tm$load_mesh("C:\\Users\\JC\\Documents\\fanc_skels\\dn\\648518346483023780.obj",process = FALSE)
-#mesh = sk$pre$fix_mesh(mesh=mesh, remove_disconnected=5, inplace=TRUE)
-#swc = sk$skeletonize$by_wavefront(mesh=mesh, waves = 1, step_size = 1, progress=FALSE)
-#reticulate::py_run_string(sprintf("swc = sk.skeletonize.by_wavefront(mesh=m, %s, progress=False)",
-#                                   skeletonize.params))
-#skel = reticulate::py$swc
-	swc = skel$swc
-	colnames(swc) = c("PointNo","Parent","X","Y","Z","W")
-	neuron = nat::as.neuron(swc)
-  if(heal){
-    neuron = suppressMessages(nat::stitch_neurons_mst(x = neuron, threshold = heal.threshold, k = heal.k))
-  }					
-									
-									
-									
-fanc_dn_skels = lapply(fanc_dn_skels, FUN = simplify_neuron, n = 1)
+fanc_dn_skels = skeletor_wavefront(obj = fanc_skel_subpath, waves = 1)
 
 fanc_dn_skels_xform = transform_fanc2manc(fanc_dn_skels)
