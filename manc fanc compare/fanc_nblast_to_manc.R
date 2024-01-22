@@ -60,3 +60,5 @@ skeletor_wavefront = function(obj, waves, step_size, heal = TRUE) {
 fanc_dn_skels = skeletor_wavefront(obj = fanc_skel_subpath, waves = 1)
 
 fanc_dn_skels_xform = transform_fanc2manc(fanc_dn_skels)
+
+write.neurons(fanc_dn_skels_xform, dir=fanc_skel_subpath)
