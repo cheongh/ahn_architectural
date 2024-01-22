@@ -13,7 +13,6 @@ ds_syn_thres = 3
 msahns = c(13926, 12536)
 
 tect_in_groups = c(22289, 21307, 18519, 14502, 14625, 15337, 22521, 21381, 13060, 15788, 15113)
-#temp_list = read.csv("temp_msahn_type1_and_indirect_flight_bodyids.csv")
 
 temp_list = neuprintr::neuprint_list2df(neuprintr::neuprint_fetch_custom(cypher=paste0("MATCH (a:Neuron)-[w:ConnectsTo]->(b:Neuron) WHERE b.bodyId IN [", paste0(msahns, collapse = ","), "] AND a.type IN ['DNg02','DNp54'] AND w.weight >=", us_syn_thres," RETURN DISTINCT a.bodyId AS bodyid, a.class AS class, a.group AS group, a.type AS temp_label"), timeout=2000))
 temp_list_2 = neuprintr::neuprint_list2df(neuprintr::neuprint_fetch_custom(cypher=paste0("MATCH (a:Neuron)-[w:ConnectsTo]->(b:Neuron) WHERE a.bodyId IN [", paste0(msahns, collapse = ","), "] AND w.weight >=", ds_syn_thres," AND b.group IN [", paste0(tect_in_groups, collapse = ","), "] RETURN DISTINCT b.bodyId AS bodyid, b.class AS class, b.group AS group"), timeout=2000))
