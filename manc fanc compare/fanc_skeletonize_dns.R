@@ -18,7 +18,7 @@ fanc_skel_subpath = paste(getwd(), "fanc_skels", "dn", sep = "\\\\")
 if (!dir.exists(fanc_skel_subpath)) dir.create(fanc_skel_subpath)
 
 #tweak these settings
-with_fanc(download_neuron_obj(unlist(fanc_dn_data$autoID[1]), save.obj = fanc_skel_subpath))
+with_fanc(download_neuron_obj(unlist(fanc_dn_data$autoID), save.obj = fanc_skel_subpath))
 
 #fanc_dn_skels = with_fanc(meshparty_skeletonize(unlist(fanc_dn_data$autoID[1])))
 #skeletor function bugged
@@ -31,34 +31,32 @@ skeletor_wavefront = function(obj, waves, step_size, heal = TRUE) {
 		filelist = unlist(strsplit(obj, "[\\/]"))
 		filelist = filelist[length(filelist)]
 	}
-	swclist = list()
+	swclist = neuronlist()
 	#check that all have valid extensions by strsplit()
-	filelist = filelist[sapply(filelist, FUN = function(x) {temp = unlist(strsplit(x, "."));
+	filelist = filelist[sapply(filelist, FUN = function(x) {temp = unlist(strsplit(x, "\\."));
 		if (length(temp) < 2 | temp[length(temp)] != "obj") return(FALSE) else return(TRUE)})]
 	reticulate::py_run_string("import skeletor as sk")
 	reticulate::py_run_string("import trimesh as tm")
 	for (i in filelist) {
-		reticulate::py_run_string(sprintf("mesh = tm$load_mesh(\"%s\", process = False)",
-			paste(obj, i, sep = "\\")))
+		reticulate::py_run_string(sprintf('mesh = tm.load_mesh("%s", process = False)',
+			paste(obj, i, sep = '\\\\')))
 		reticulate::py_run_string(sprintf("mesh = sk.pre.fix_mesh(mesh = mesh, remove_disconnected = 5, inplace = True)"))
 		reticulate::py_run_string(sprintf("swc = sk.skeletonize.by_wavefront(mesh = mesh, waves = %s, step_size = %s, progress=False)",
             waves, step_size))
-		skel = reticulate::py$swc$swc
+		swc = reticulate::py$swc$swc
 		#swc = skel$swc
 		colnames(swc) = c("PointNo","Parent","X","Y","Z","W")
 		neuron = nat::as.neuron(swc)
-		names(neuron) = i
 		#do we need some way to add segmentID to neuron
 		if(heal){
 			neuron = suppressMessages(nat::stitch_neurons_mst(x = neuron, threshold = Inf, k = 10L))
 		}
-		swclist = append(swclist, neuron)
+		nl = neuronlist(neuron)
+		names(nl) = strsplit(i, "\\.")[[1]][1]
+		swclist = append(swclist, nl)
 	}
 	return(swclist)
 }
 
-fanc_dn_skels = skeletor_wavefront(obj = fanc_skel_subpath, waves = 1)
-
-fanc_dn_skels_xform = transform_fanc2manc(fanc_dn_skels)
-
-write.neurons(fanc_dn_skels_xform, dir=fanc_skel_subpath)
+swcs = skeletor_wavefront(fanc_skel_subpath, waves = 1, step_size = 1)
+write.neurons(swcs, dir = fanc_skel_subpath, format = "swc")
