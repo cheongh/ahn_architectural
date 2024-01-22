@@ -1,3 +1,7 @@
+library(neuprintr)
+library(malevnc)
+box::use(mancfuns/han)
+
 syn_thres=3
 
 msahn = c(12536, 13926)
