@@ -135,20 +135,4 @@ sample_fanc_downstream_ss = function(ss, sheets) {
 	}
 }
 
-sample_fanc_downstream_ss(autoseg_from_catmaid_ss, sheets_to_sample)
-
-
-#https://radagast.hms.harvard.edu/catmaidvnc/?pid=13&zp=49185&yp=536349.75&xp=225294.19999999998&tool=tracingtool&active_skeleton_id=342349&active_node_id=8108590&sid0=10&s0=0
-#voxelCoordinates%22:[48848.1719,114737.2109,2690]
-#%22zoomFactor%22:8%7D,%22perspectiveZoom%22:2230.6094
-
-
-#fanc_ahn_downstream_ss = read_sheet("https://docs.google.com/spreadsheets/d/19adhRzBUiiERoLX2PWxv-to0TcLIpCJZkQoKV-DAbQc/edit#gid=829557905", sheet = "AHNs Wing-Raven")
-#temp_coords = sapply(fanc_ahn_downstream_ss$"Coord (Paste in NG)", FUN = function(x) strsplit(x, split = ", "))
-#temp_coords = lapply(temp_coords, FUN = function(x) if (all(is.na(x))) c(0,0,0) else x)
-#temp_coords = t(matrix(unlist(temp_coords), nrow = 3, ncol = length(temp_coords)))
-#temp_xform_coords = fanc3_to_4(temp_coords, precision = 0.01)
-#fanc_ahn_downstream_ss$autoid = fanc_xyz2id(temp_xform_coords, rawcoords = TRUE)
-#fanc_ahn_downstream_ss$autoid_manual_match = (fanc_ahn_downstream_ss$"NG Segment ID" == fanc_ahn_downstream_ss$autoid)
-#fanc_ahn_downstream_ss$fanc3_to_4_coords = apply(temp_xform_coords, MARGIN = 1, FUN = function(x) paste(x, collapse = ", "))
-
+sample_fanc_downstream_ss(autoseg_from_catmaid_ss, sheets_to_sample) #sample some locations to crosscheck that the postsynaptic neuron of AHNs in autoseg was properly picked up from initial catmaid postsynaptic site locations (from manual tracing)
