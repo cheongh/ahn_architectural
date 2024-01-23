@@ -19,7 +19,9 @@ total_syn_thres = 100
 
 all_neurons = flytable_meta()
 all_neurons = all_neurons[!(all_neurons$super_class %in% c(NA, "endocrine", "not_a_neuron")),]
-schlegel_groups = read.csv("schlegel_2023_sup_3_morphological_groups.csv", colClasses = 'character') #if cell does not have type, use morphological groups as defined in Schlegel 2023 flywire paper
+#this file is from https://doi.org/10.1101/2023.06.27.546055
+#if cell does not have type, use morphological groups as defined in Schlegel 2023 flywire paper
+schlegel_groups = read.csv("schlegel_2023_sup_3_morphological_groups.csv", colClasses = 'character') 
 all_neurons$cell_type = ifelse(is.na(all_neurons$cell_type) | all_neurons$cell_type == "",
 	schlegel_groups$morphological_group[match(all_neurons$root_id, schlegel_groups$root_630)],
 	all_neurons$cell_type)
