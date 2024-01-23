@@ -13,7 +13,6 @@ source("shared_functions.R")
 
 choose_segmentation("public-flywire31")
 
-eff_conn_thres = 0.0005 #reasonably gets top ~50 types ds of MsAHN but hardly any of MtAHN #not used
 #threshold of how many input synapses a neuron must have to consider effective conn str 'real'
 #doing this because some poorly reconstructed neurons appear as top hits
 total_syn_thres = 100
