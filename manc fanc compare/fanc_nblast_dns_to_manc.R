@@ -10,9 +10,9 @@ google_output_ss = "https://docs.google.com/spreadsheets/d/1jbapg_QSySZggY69PTnh
 swcs = read.neurons(paths = "fanc_skels/dn", pattern = "\\d+\\.swc", format = "swc")
 xformed_swcs = transform_fanc2manc(swcs, inverse = F)
 
-google_dn_type_ss = "https://docs.google.com/spreadsheets/d/1diedvCNkyBPIPDxPTBOldKVBzLAL6aY7hph7C6YlUc8/edit#gid=0"
-google_dn_type_ss = read_sheet(google_dn_type_ss, sheet = 1)
-google_dn_type_ss = google_dn_type_ss[google_dn_type_ss$class1 == "DN",]
+google_dn_type_ss = manc_neuprint_meta("class:descending neuron") #changed to directly get dns from neuprint
+google_dn_type_ss$type = ifelse(google_dn_type_ss$type==google_dn_type_ss$systematicType, google_dn_type_ss$group, google_dn_type_ss$type)
+
 dn_swcs = neuprint_read_skeletons(google_dn_type_ss$bodyid)
 #rescale dn_swcs to be right size from voxel units (8nm) to nm
 for (i in 1:length(dn_swcs)) {
@@ -38,8 +38,6 @@ nblast_output_df = data.frame(segID = names(nblast_df))
 nblast_output_df[paste0("match_", 1:10)] = t(sapply(nblast_df, FUN = function(x) names(x)))
 nblast_output_df[paste0("norm_score_", 1:10)] = t(sapply(nblast_df, FUN = function(x) x))
 nblast_output_df[paste0("cell_type_", 1:10)] = apply(nblast_output_df[paste0("match_", 1:10)], MARGIN = 2, FUN = function(x) sapply(x, FUN = function(y)
-	ifelse(!is.na(google_dn_type_ss$ourtype[match(y, google_dn_type_ss$bodyid)]),
-	google_dn_type_ss$ourtype[match(y, google_dn_type_ss$bodyid)],
-	google_dn_type_ss$ourmatch[match(y, google_dn_type_ss$bodyid)])))
+	google_dn_type_ss$type[match(y, google_dn_type_ss$bodyid)]))
 	
 sheet_write(nblast_output_df, google_output_ss)
