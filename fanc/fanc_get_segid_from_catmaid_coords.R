@@ -65,6 +65,7 @@ fanc_update_autoid = function(ss, sheet, colname, write_range) {
 	range_write(ss, data.frame(autoID = autoid), sheet, write_range, reformat = FALSE)
 }
 
+#sample code for updating segIDs as proofreading progresses
 autoid_target_ss = "https://docs.google.com/spreadsheets/d/1jd54V7H1f7RAQr9o03nf_Foxv5TxTIYrEj2V13PWBn0/edit#gid=1765223037"
 autoid_target_sheet = c("MsAHN-l (KB)", "MsAHN-r (JR)", "MtAHN-l (AP)", "MtAHN-r (AC)")
 #this is downstream
