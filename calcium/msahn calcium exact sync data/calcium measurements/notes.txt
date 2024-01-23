@@ -1,0 +1,1 @@
+Column names with 1 appended at the end are fluorescence measurements at MsAHN soma, while those with 2 at the end are fluorescent measurements in a background neuropil area around the soma. Columns with 3 or 4 at the end (if present) are the same measurements for a second MsAHN soma (if visible).
