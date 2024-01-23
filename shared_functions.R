@@ -9,6 +9,7 @@ library(RColorBrewer)
 library(svglite)
 library(igraph)
 
+#flywire ahn segIDs. IDs for other volumes separately defined
 mtahns =  c("MtAHN-L"="720575940614269393", "MtAHN-R"="720575940622346876")
 msahns = c("MsAHN-R"="720575940630175276", "MsAHN-L"="720575940626130469")
 #Tect INs
